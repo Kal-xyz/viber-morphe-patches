@@ -1,7 +1,3 @@
-plugins {
-    id("org.jetbrains.kotlin.android")
-}
-
 android {
     namespace = "app.morphe.extension.viber"
     compileSdk = 34
