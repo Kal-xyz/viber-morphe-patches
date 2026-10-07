@@ -8,10 +8,14 @@ on:
 
 permissions:
   contents: write
+  packages: read
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      GITHUB_ACTOR: ${{ github.actor }}
+      GITHUB_TOKEN: ${{ secrets.PAT || secrets.GITHUB_TOKEN }}
 
     steps:
       - name: Checkout code
