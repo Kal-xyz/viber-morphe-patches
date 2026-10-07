@@ -1,5 +1,4 @@
 plugins {
-    id("app.morphe.patches")
     kotlin("jvm")
 }
 
