@@ -20,6 +20,7 @@ patches {
 val patchListGeneratorClasspath = configurations.create("patchListGeneratorClasspath")
 
 dependencies {
+    implementation(libs.morphe.patcher)
     implementation("com.google.guava:guava:33.0.0-jre")
     implementation(libs.gson)
 

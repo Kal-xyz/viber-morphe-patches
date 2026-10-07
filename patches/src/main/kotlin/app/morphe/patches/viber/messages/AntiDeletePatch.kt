@@ -11,22 +11,19 @@ val antiDeletePatch = bytecodePatch(
     name = "Anti-delete messages",
     description = "Retains messages even when deleted or retracted by the sender."
 ) {
-    compatiblePackages(COMPATIBILITY_VIBER)
+    compatibleWith(COMPATIBILITY_VIBER)
 
     execute {
-        MessageRetractionHandlerFingerprint.result?.let { match ->
-            val method = match.method
-            method.addInstructions(
-                0,
-                """
-                invoke-static {p1, p2}, $EXTENSION_CLASS->shouldProcessMessageDeletion(Ljava/lang/String;Ljava/lang/String;)Z
-                move-result v0
-                if-nez v0, :cond_retract
-                const/4 v0, 0x0
-                return v0
-                :cond_retract
-                """
-            )
-        }
+        MessageRetractionHandlerFingerprint.method.addInstructions(
+            0,
+            """
+            invoke-static {p1, p2}, $EXTENSION_CLASS->shouldProcessMessageDeletion(Ljava/lang/String;Ljava/lang/String;)Z
+            move-result v0
+            if-nez v0, :cond_retract
+            const/4 v0, 0x0
+            return v0
+            :cond_retract
+            """
+        )
     }
 }

@@ -11,30 +11,24 @@ val hideAdsPatch = bytecodePatch(
     name = "Hide ads",
     description = "Removes in-chat banner ads, explore ads, and call-end promotional cards."
 ) {
-    compatiblePackages(COMPATIBILITY_VIBER)
+    compatibleWith(COMPATIBILITY_VIBER)
 
     execute {
         // Intercept ad loader to suppress ad queries
-        ViberAdLoaderFingerprint.result?.let { match ->
-            val method = match.method
-            method.addInstructions(
-                0,
-                """
-                const/4 v0, 0x0
-                return v0
-                """
-            )
-        }
+        ViberAdLoaderFingerprint.method.addInstructions(
+            0,
+            """
+            const/4 v0, 0x0
+            return v0
+            """
+        )
 
         // Intercept banner container inflation to hide view
-        ViberBannerViewFingerprint.result?.let { match ->
-            val method = match.method
-            method.addInstructions(
-                0,
-                """
-                invoke-static {p1}, $EXTENSION_CLASS->hideAdView(Landroid/view/View;)V
-                """
-            )
-        }
+        ViberBannerViewFingerprint.method.addInstructions(
+            0,
+            """
+            invoke-static {p1}, $EXTENSION_CLASS->hideAdView(Landroid/view/View;)V
+            """
+        )
     }
 }

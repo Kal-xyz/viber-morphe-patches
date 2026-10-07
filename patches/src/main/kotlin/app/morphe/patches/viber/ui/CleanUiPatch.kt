@@ -11,21 +11,18 @@ val cleanUiPatch = bytecodePatch(
     name = "Clean UI",
     description = "Removes the Explore tab and promotional badges from bottom navigation."
 ) {
-    compatiblePackages(COMPATIBILITY_VIBER)
+    compatibleWith(COMPATIBILITY_VIBER)
 
     execute {
-        BottomNavigationInitFingerprint.result?.let { match ->
-            val method = match.method
-            method.addInstructions(
-                0,
-                """
-                invoke-static {}, $EXTENSION_CLASS->isExploreTabEnabled()Z
-                move-result v0
-                if-nez v0, :cond_explore
-                return-void
-                :cond_explore
-                """
-            )
-        }
+        BottomNavigationInitFingerprint.method.addInstructions(
+            0,
+            """
+            invoke-static {}, $EXTENSION_CLASS->isExploreTabEnabled()Z
+            move-result v0
+            if-nez v0, :cond_explore
+            return-void
+            :cond_explore
+            """
+        )
     }
 }
